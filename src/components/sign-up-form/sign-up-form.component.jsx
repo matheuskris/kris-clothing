@@ -25,6 +25,7 @@ const SignUpForm = () => {
         try {
             const { user } = await createAuthUserWithEmailAndPassword( email, password )
             await createUserDocumentFromAuth( user, { displayName })
+            resetFormFields()
         } catch(error) {
             if(error.code === 'auth/email-already-in-use'){
                 alert('cannot create user, email already in use')
@@ -38,6 +39,10 @@ const SignUpForm = () => {
         const { name, value } = event.target
         
         setFormFields({...formFields, [name]: value})
+    }
+
+    const resetFormFields = () => {
+        setFormFields(defaultFormFields)
     }
 
     return(
