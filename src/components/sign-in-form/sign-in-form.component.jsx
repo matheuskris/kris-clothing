@@ -1,14 +1,14 @@
-import Button from '../button/button.component'
 import {
-    auth,
     signInwithGooglePopup,
     createUserDocumentFromAuth,
     signInAuthUserWithEmailandPassword,
 } from '../../utils/firebase/firebase.utils'
 import { useState } from 'react'
+
 import FormImput from '../form-input/form-input.component'
+import Button from '../button/button.component'
+
 import './sign-in-form.styles.scss'
-import { browserLocalPersistence } from 'firebase/auth'
 
 const defaultFormFields = { 
     email: '',
@@ -29,8 +29,7 @@ const SignInForm = () => {
         event.preventDefault()
 
         try {
-            const { user } = await signInAuthUserWithEmailandPassword( email, password )
-            console.log(user)
+            await signInAuthUserWithEmailandPassword( email, password )
             alert('login sucessfull')
             resetFormFields()
         } catch(error) {
@@ -48,8 +47,7 @@ const SignInForm = () => {
     }
 
     const logGoogleUser = async () => {
-        const { user } = await signInwithGooglePopup();
-        const userDocRef = await createUserDocumentFromAuth(user)
+        await signInwithGooglePopup();
     }
 
     const resetFormFields = () => {
