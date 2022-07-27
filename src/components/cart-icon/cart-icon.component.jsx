@@ -6,7 +6,7 @@ import { CartProductsContext } from '../../contexts/cart-products.context'
 import './cart-icon.styles.scss'
 
 const CartIcon = () => {
-    const { toggle, setToggle} = useContext(CartProductsContext)
+    const { toggle, setToggle, cartItems} = useContext(CartProductsContext)
     const toggleCart = () => {
         if(toggle){
             setToggle(false)
@@ -14,10 +14,13 @@ const CartIcon = () => {
             setToggle(true)
         }
     }
+
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity,0)
+
     return(
         <div className='cart-icon-container' onClick={toggleCart}>
             <ShoppingIcon className='shopping-icon'/>
-            <span className='item-count'>10</span>
+            <span className='item-count'>{totalQuantity}</span>
         </div>
     )
 }
