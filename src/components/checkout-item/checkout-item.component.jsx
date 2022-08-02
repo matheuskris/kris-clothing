@@ -12,12 +12,18 @@ const CheckoutItem = ({checkItem}) => {
     const exclude = () => explodeItem(checkItem)
 
     return (
-        <div className='check-item-container'>
-            <img src={imageUrl} alt={name} />
-            <span>{name}</span>
-            <span><button onClick={decrease}>-</button>{quantity}<button onClick={add}>+</button></span>
-            <span>{price*quantity}</span>
-            <span><button onClick={exclude}>X</button></span>
+        <div className='checkout-item-container'>
+            <div className='image-container'>
+                <img src={imageUrl} alt={name} />
+            </div>
+            <span className='name'>{name}</span>
+            <span className='quantity'>
+                <button className='arrow' onClick={decrease}>&#10094;</button>
+                <span className='value'>{quantity}</span>
+                <button className='arrow' onClick={add}>&#10095;</button>
+            </span>
+            <span className='price'>{price}</span>
+            <div className='remove-button' onClick={exclude}>&#10005;</div>
         </div>
     )
 }

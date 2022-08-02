@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
     const existingCartItem = cartItems.find(
@@ -31,14 +31,7 @@ const decreaseQuantity = (cartItems, productToDecrease) => {
 }
 
 const excludeItem = (cartItems, productToExclude) => {
-    const indexOfItem = cartItems.reduce((itemIndex, item) => {
-        if(item.id === productToExclude.id){
-            return itemIndex + cartItems.indexOf(item)
-        }
-        return 0
-    }, 0)
-    console.log(indexOfItem)
-    return  cartItems.filter((value) => (cartItems.indexOf(value)!==indexOfItem))
+    return  cartItems.filter(value => value.id !== productToExclude.id)
 }
 
 export const CartProductsContext = createContext({
@@ -48,11 +41,13 @@ export const CartProductsContext = createContext({
     setToggle: () => {},
     addQuantityOfItem: () => {},
     removeQuantityOfItem: () => {},
-    explodeItem: () => {}
+    explodeItem: () => {},
+    total: {},
 })
 
 export const CartProductsProvider = ({children}) => {
     const [ cartItems, setCartItems ] = useState([])
+    const [ total, setTotal ] = useState(0)
     const [ toggle, setToggle ] = useState(false)
 
     const addItemToCart = (productToAdd) => {
@@ -67,6 +62,13 @@ export const CartProductsProvider = ({children}) => {
     const explodeItem = (productToExclude) => {
         setCartItems(excludeItem(cartItems, productToExclude))
     }
+    useEffect(()=>{
+        const newTotal = cartItems.reduce((total, item) => {
+            const totalItem = item.quantity*item.price
+            return total + totalItem
+        }, 0)
+        setTotal(newTotal)
+    }, [cartItems])
 
     const value = { 
         cartItems, 
@@ -75,7 +77,8 @@ export const CartProductsProvider = ({children}) => {
         setToggle, 
         addQuantityOfItem,
         removeQuantityOfItem,
-        explodeItem
+        explodeItem,
+        total
     }
 
     return(
