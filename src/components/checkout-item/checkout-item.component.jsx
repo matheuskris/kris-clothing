@@ -4,11 +4,11 @@ import { useContext } from 'react'
 import { CartProductsContext } from '../../contexts/cart-products.context'
 
 const CheckoutItem = ({checkItem}) => {
-    const { addQuantityOfItem, removeQuantityOfItem, explodeItem } = useContext(CartProductsContext)
+    const { addItemToCart, removeQuantityOfItem, explodeItem } = useContext(CartProductsContext)
     const { name, price, quantity, imageUrl } = checkItem
 
     const decrease = () => removeQuantityOfItem(checkItem)
-    const add = () => addQuantityOfItem(checkItem)
+    const add = () => addItemToCart(checkItem)
     const exclude = () => explodeItem(checkItem)
 
     return (
