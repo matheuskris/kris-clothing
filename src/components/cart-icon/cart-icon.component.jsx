@@ -1,5 +1,6 @@
-import { useContext } from 'react'
-import { CartProductsContext } from '../../contexts/cart-products.context'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectCartItems, selectToggle } from '../../store/cart-products/cart-products.selector.js'
+import { toggleCartDropdown } from '../../store/cart-products/cart-products.action'
 
 import {
     CartIconContainer,
@@ -8,12 +9,15 @@ import {
 } from './cart-icon.styles.jsx'
 
 const CartIcon = () => {
-    const { toggle, setToggle, cartItems} = useContext(CartProductsContext)
+    const dispatch = useDispatch()
+    const toggle = useSelector(selectToggle)
+    const cartItems = useSelector(selectCartItems)
+
     const toggleCart = () => {
         if(toggle){
-            setToggle(false)
+            dispatch(toggleCartDropdown(false))
         } else {
-            setToggle(true)
+            dispatch(toggleCartDropdown(true))
         }
     }
 
