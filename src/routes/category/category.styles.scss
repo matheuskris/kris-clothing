@@ -1,6 +1,14 @@
-.category-container{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    column-gap: 20px;
-    row-gap: 50px;
+h2.category-title {
+  display: flex;
+  justify-content: center;
+}
+.category-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  .productt-container {
+    max-width: 200px;
+    margin-bottom: 20px;
+  }
 }
