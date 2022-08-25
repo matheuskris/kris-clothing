@@ -36,21 +36,12 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>
-        {user ? (
-          <>
-            <Route index element={<Home />} />
-            <Route path="home" element={<Home />} />
-            <Route path="shop/*" element={<Shop />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="*" element={<Home />} />
-          </>
-        ) : (
-          <>
-            <Route index element={<Auth />} />
-            <Route path="auth" element={<Auth />} />
-            <Route path="*" element={<Auth />} />
-          </>
-        )}
+        <Route index element={<Home />} />
+        <Route path="home" element={<Home />} />
+        <Route path="shop/*" element={<Shop />} />
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="*" element={<Home />} />
+        <Route path="auth" element={<Auth />} />
       </Route>
     </Routes>
   );
