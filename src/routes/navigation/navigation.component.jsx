@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { Fragment } from "react";
-import { useSelector } from "react-redux";
+import { Fragment, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
@@ -8,6 +8,7 @@ import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { selectToggle } from "../../store/cart-products/cart-products.selector";
+import { toggleCartDropdown } from "../../store/cart-products/cart-products.action";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 
@@ -21,6 +22,27 @@ import {
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
   const toggle = useSelector(selectToggle);
+  const dispatch = useDispatch();
+
+  console.log("render");
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      const targetid = event.target.id;
+      console.log(targetid);
+      if (targetid !== "cartDropdown" && toggle === true) {
+        // dispatch(toggleCartDropdown(false));
+        console.log("toggle-cart");
+      }
+    };
+    window.addEventListener("click", handleClick);
+
+    console.log("useEffect Triggered");
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, [dispatch, toggle]);
 
   return (
     <Fragment>

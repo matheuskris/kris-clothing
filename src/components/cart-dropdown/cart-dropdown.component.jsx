@@ -21,7 +21,7 @@ const CartDropdown = () => {
   };
 
   return (
-    <CartDropdownContainer>
+    <CartDropdownContainer id="cartDropdown">
       {cartItems[0] ? (
         <CartItems>
           {cartItems.map((item) => (
