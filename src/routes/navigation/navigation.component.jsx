@@ -8,7 +8,7 @@ import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { selectToggle } from "../../store/cart-products/cart-products.selector";
-import { toggleCartDropdown } from "../../store/cart-products/cart-products.action";
+// import { toggleCartDropdown } from "../../store/cart-products/cart-products.action";
 
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 
@@ -18,31 +18,12 @@ import {
   NavLinks,
   NavLink,
 } from "./navigation.styles.jsx";
+import { signOutStart } from "../../store/user/user.action";
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
   const toggle = useSelector(selectToggle);
   const dispatch = useDispatch();
-
-  console.log("render");
-
-  useEffect(() => {
-    const handleClick = (event) => {
-      const targetid = event.target.id;
-      console.log(targetid);
-      if (targetid !== "cartDropdown" && toggle === true) {
-        // dispatch(toggleCartDropdown(false));
-        console.log("toggle-cart");
-      }
-    };
-    window.addEventListener("click", handleClick);
-
-    console.log("useEffect Triggered");
-
-    return () => {
-      window.removeEventListener("click", handleClick);
-    };
-  }, [dispatch, toggle]);
 
   return (
     <Fragment>
@@ -55,7 +36,12 @@ const Navigation = () => {
             SHOP
           </NavLink>
           {currentUser ? (
-            <NavLink to="/" onClick={signOutUser}>
+            <NavLink
+              to="/"
+              onClick={() => {
+                dispatch(signOutStart());
+              }}
+            >
               SIGN OUT
             </NavLink>
           ) : (
@@ -63,7 +49,7 @@ const Navigation = () => {
           )}
           <CartIcon />
         </NavLinks>
-        {toggle ? <CartDropdown></CartDropdown> : ""}
+        {toggle ? <CartDropdown /> : ""}
       </NavigationContainer>
       <Outlet />
     </Fragment>

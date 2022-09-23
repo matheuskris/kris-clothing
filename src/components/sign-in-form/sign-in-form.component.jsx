@@ -1,8 +1,15 @@
+import { signInAuthUserWithEmailandPassword } from "../../utils/firebase/firebase.utils";
 import {
-  signInwithGooglePopup,
-  signInAuthUserWithEmailandPassword,
-} from "../../utils/firebase/firebase.utils";
-import { useState } from "react";
+  googleSignInStart,
+  signInWithEmailStart,
+} from "../../store/user/user.action";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUserError,
+  selectCurrentUser,
+} from "../../store/user/user.selector";
+
+import { useEffect, useState } from "react";
 
 import FormImput from "../form-input/form-input.component";
 import Button, { buttonTypeClasses } from "../button/button.component";
@@ -17,6 +24,9 @@ const defaultFormFields = {
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+  const dispatch = useDispatch();
+  const userError = useSelector(selectUserError);
+  const user = useSelector(selectCurrentUser);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,15 +34,13 @@ const SignInForm = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await signInAuthUserWithEmailandPassword(email, password);
+  useEffect(() => {
+    if (user) {
       alert("login sucessfull");
-      resetFormFields();
-    } catch (error) {
-      switch (error.code) {
+      return;
+    }
+    if (userError) {
+      switch (userError.code) {
         case "auth/wrong-password":
           alert("incorrect password");
           break;
@@ -40,18 +48,25 @@ const SignInForm = () => {
           alert("no user associated with this email");
           break;
         default:
-          console.log("user login encountered an error" + error);
+          console.log("user login encountered an error" + userError);
       }
     }
+  }, [userError, user]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    resetFormFields();
+    dispatch(signInWithEmailStart(email, password));
   };
 
-  const logGoogleUser = async () => {
-    await signInwithGooglePopup();
+  const logGoogleUser = () => {
+    dispatch(googleSignInStart());
   };
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
   return (
     <SignInContainer>
       <h1>I already have an account</h1>
