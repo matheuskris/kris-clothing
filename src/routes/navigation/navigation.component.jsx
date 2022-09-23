@@ -25,6 +25,10 @@ const Navigation = () => {
   const toggle = useSelector(selectToggle);
   const dispatch = useDispatch();
 
+  const signOutUser = () => {
+    dispatch(signOutStart());
+  };
+
   return (
     <Fragment>
       <NavigationContainer>
@@ -36,12 +40,7 @@ const Navigation = () => {
             SHOP
           </NavLink>
           {currentUser ? (
-            <NavLink
-              to="/"
-              onClick={() => {
-                dispatch(signOutStart());
-              }}
-            >
+            <NavLink to="/" onClick={signOutUser}>
               SIGN OUT
             </NavLink>
           ) : (
