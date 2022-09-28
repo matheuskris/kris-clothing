@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import "./shop.styles.scss";
+import { ProductsContainer } from "./shop.styles.tsx";
 
 import CategoriesPreview from "../categories-preview/categories-preview.component";
 import Category from "../category/category.component";
