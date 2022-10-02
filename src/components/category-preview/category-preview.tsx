@@ -4,27 +4,33 @@ import { CategoryContainer, Title, Preview } from "./category-preview.styles";
 import { useEffect, useState } from "react";
 import { categoryItem } from "../../store/categories/category.types";
 
-const startScreenWidth = 0;
-
 type CategoryPreviewProps = {
   title: string;
   products: categoryItem[];
 };
 
 const CategoryPreview = ({ title, products }: CategoryPreviewProps) => {
-  const [screenWidth, setScreenWidth] = useState(startScreenWidth);
+  const [numberOfProducts, setNumberOfProducts] = useState(0);
 
   useEffect(() => {
-    const newScreenWidth = window.innerWidth;
-    setScreenWidth(newScreenWidth);
-  }, [window]);
+    window.addEventListener("resize", getHowManyProducts);
+
+    return window.removeEventListener("resize", getHowManyProducts);
+  }, []);
 
   const getHowManyProducts = () => {
-    if (screenWidth > 700) return 4;
-    if (screenWidth > 550) return 3;
-    return 2;
+    const screenWidth = window.innerWidth;
+    console.log("oi");
+    if (screenWidth > 700) {
+      setNumberOfProducts(4);
+      return;
+    }
+    if (screenWidth > 550) {
+      setNumberOfProducts(3);
+      return;
+    }
+    setNumberOfProducts(2);
   };
-  const showProducts = getHowManyProducts();
 
   const navigate = useNavigate();
   const goToCategoryHandler = () => {
@@ -37,7 +43,7 @@ const CategoryPreview = ({ title, products }: CategoryPreviewProps) => {
       </h2>
       <Preview>
         {products
-          .filter((_, idx) => idx < showProducts)
+          .filter((_, idx) => idx < numberOfProducts)
           .map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
